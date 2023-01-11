@@ -9,9 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssociadoDTO {
+public class BodyDTO {
+    private String campo1;
+    private Long campo2;
 
-    private String id;
-    private String nome;
-    private String cpf;
 }

@@ -23,7 +23,9 @@ public class PautaMapper {
     public PautaDTO convertToPautaDTO(Pauta pauta) {
         PautaDTO pautaDTO = new PautaDTO();
         pautaDTO.setId(pauta.getId());
-        pautaDTO.setSessaoVotacaoDTO(sessaoVotacaoMapper.convertToSessaoVotacaoDTO(pauta.getSessaoVotacao()));
+        if (pauta.getSessaoVotacao() != null) {
+            pautaDTO.setSessaoVotacaoDTO(sessaoVotacaoMapper.convertToSessaoVotacaoDTO(pauta.getSessaoVotacao()));
+        }
         List<VotoDTO> votoDTOs = pauta.getVotos().stream()
                 .map(votoMapper::convertToVotoDTO)
                 .collect(Collectors.toList());
@@ -34,7 +36,9 @@ public class PautaMapper {
     public Pauta convertToPauta(PautaDTO pautaDTO) {
         Pauta pauta = new Pauta();
         pauta.setId(pautaDTO.getId());
-        pauta.setSessaoVotacao(sessaoVotacaoMapper.convertToSessaoVotacao(pautaDTO.getSessaoVotacaoDTO()));
+        if (pautaDTO.getSessaoVotacaoDTO() != null) {
+            pauta.setSessaoVotacao(sessaoVotacaoMapper.convertToSessaoVotacao(pautaDTO.getSessaoVotacaoDTO()));
+        }
         List<Voto> votos = pautaDTO.getVotos().stream()
                 .map(votoMapper::convertToVoto)
                 .collect(Collectors.toList());

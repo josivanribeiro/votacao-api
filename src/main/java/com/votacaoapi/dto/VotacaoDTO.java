@@ -9,9 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssociadoDTO {
-
-    private String id;
-    private String nome;
-    private String cpf;
+public class VotacaoDTO {
+    private String campo1;
+    private Long campo2;
+    private String idCampoTexto;
+    private String idCampoNumerico;
+    private String idCampoData;
 }

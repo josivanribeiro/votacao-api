@@ -5,13 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssociadoDTO {
+public class ItensDTO {
+    private String tipo;
+    private String texto;
+    private List<ItemDTO> itens;
 
-    private String id;
-    private String nome;
-    private String cpf;
 }

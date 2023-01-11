@@ -9,9 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssociadoDTO {
-
-    private String id;
-    private String nome;
-    private String cpf;
+public class BotaoOKDTO {
+    private String texto;
+    private String url;
+    private BodyDTO body;
 }

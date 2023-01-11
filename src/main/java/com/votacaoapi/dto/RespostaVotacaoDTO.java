@@ -9,9 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AssociadoDTO {
-
-    private String id;
-    private String nome;
-    private String cpf;
+public class RespostaVotacaoDTO {
+    private String tipo;
+    private String titulo;
+    private ItensDTO itens;
+    private BotaoOKDTO botaoOk;
+    private BotaoCancelarDTO botaoCancelar;
 }
