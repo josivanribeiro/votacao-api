@@ -4,6 +4,8 @@ import com.votacaoapi.dto.*;
 import com.votacaoapi.entity.Pauta;
 import com.votacaoapi.mapper.PautaMapper;
 import com.votacaoapi.repository.PautaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Service
 public class PautaService {
+
+    Logger logger = LoggerFactory.getLogger(PautaService.class);
 
     private final PautaRepository pautaRepository;
     private final PautaMapper pautaMapper;
@@ -34,12 +38,16 @@ public class PautaService {
 
         Pauta pauta = pautaMapper.convertToPauta(pautaDTO);
         PautaDTO pautaDTOResponse = pautaMapper.convertToPautaDTO(pautaRepository.save(pauta));
+        logger.info("Pauta salva com sucesso.");
 
         RespostaVotacaoDTO respostaVotacaoDTO = new RespostaVotacaoDTO();
         BotaoOKDTO botaoOKDTO = new BotaoOKDTO();
         BodyDTO bodyDTO = new BodyDTO();
-        bodyDTO.setCampo1(pautaDTOResponse.getVotos().get(0).getDescricao());
-        bodyDTO.setCampo2(new Long(pautaDTOResponse.getVotos().get(0).getAssociadoDTO().getCpf()));
+        if (pautaDTOResponse.getVotos() != null
+                && pautaDTOResponse.getVotos().size() > 0) {
+            bodyDTO.setCampo1(pautaDTOResponse.getVotos().get(0).getDescricao());
+            bodyDTO.setCampo2(new Long(pautaDTOResponse.getVotos().get(0).getAssociadoDTO().getCpf()));
+        }
         botaoOKDTO.setBody(bodyDTO);
         respostaVotacaoDTO.setBotaoOk(botaoOKDTO);
 
