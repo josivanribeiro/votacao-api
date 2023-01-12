@@ -28,7 +28,7 @@ The following was discovered as part of building this project:
 * mkdir dev && cd dev
 * mkdir docker && cd docker
 * mkdir mongodb && cd mongodb
-* Locate a docker-compose.yml file from the root folder of the project roles-api and copy it to the “mongodb” directory you just created
+* Locate a docker-compose.yml file from the root folder of the project votacao-api and copy it to the “mongodb” directory you just created
 * Open terminal, make sure you are still inside the “mongodb” folder and run: docker-compose up -d
 * MongoDB Compass was used as a MongoDB client
 * Postman was used to perform API tests
