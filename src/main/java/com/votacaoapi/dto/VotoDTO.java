@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class VotoDTO {
     private String id;
-    private AssociadoDTO associadoDTO;
+    private AssociadoDTO associado;
     private String descricao;
 }

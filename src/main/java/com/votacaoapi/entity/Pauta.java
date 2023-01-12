@@ -13,6 +13,6 @@ import java.util.List;
 public class Pauta {
     @Id
     private String id;
-    private SessaoVotacao sessaoVotacao;
+    private String nome;
     private List<Voto> votos;
 }

@@ -17,7 +17,7 @@ public class VotoMapper {
         VotoDTO votoDTO = new VotoDTO();
         votoDTO.setId(voto.getId());
         votoDTO.setDescricao(voto.getDescricao());
-        votoDTO.setAssociadoDTO(associadoMapper.convertToAssociadoDTO(voto.getAssociado()));
+        votoDTO.setAssociado(associadoMapper.convertToAssociadoDTO(voto.getAssociado()));
         return votoDTO;
     }
 
@@ -25,7 +25,7 @@ public class VotoMapper {
         Voto voto = new Voto();
         voto.setId(votoDTO.getId());
         voto.setDescricao(votoDTO.getDescricao());
-        voto.setAssociado(associadoMapper.convertToAssociado(votoDTO.getAssociadoDTO()));
+        voto.setAssociado(associadoMapper.convertToAssociado(votoDTO.getAssociado()));
         return voto;
     }
 }

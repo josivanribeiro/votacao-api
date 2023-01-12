@@ -12,37 +12,35 @@ import java.util.stream.Collectors;
 @Component
 public class PautaMapper {
 
-    private final SessaoVotacaoMapper sessaoVotacaoMapper;
     private final VotoMapper votoMapper;
 
-    public PautaMapper(SessaoVotacaoMapper sessaoVotacaoMapper, VotoMapper votoMapper) {
-        this.sessaoVotacaoMapper = sessaoVotacaoMapper;
+    public PautaMapper(VotoMapper votoMapper) {
         this.votoMapper = votoMapper;
     }
 
     public PautaDTO convertToPautaDTO(Pauta pauta) {
         PautaDTO pautaDTO = new PautaDTO();
         pautaDTO.setId(pauta.getId());
-        if (pauta.getSessaoVotacao() != null) {
-            pautaDTO.setSessaoVotacaoDTO(sessaoVotacaoMapper.convertToSessaoVotacaoDTO(pauta.getSessaoVotacao()));
+        pautaDTO.setNome(pauta.getNome());
+        if (pauta.getVotos() != null && pauta.getVotos().size() > 0) {
+            List<VotoDTO> votoDTOs = pauta.getVotos().stream()
+                    .map(votoMapper::convertToVotoDTO)
+                    .collect(Collectors.toList());
+            pautaDTO.setVotos(votoDTOs);
         }
-        List<VotoDTO> votoDTOs = pauta.getVotos().stream()
-                .map(votoMapper::convertToVotoDTO)
-                .collect(Collectors.toList());
-        pautaDTO.setVotos(votoDTOs);
         return pautaDTO;
     }
 
     public Pauta convertToPauta(PautaDTO pautaDTO) {
         Pauta pauta = new Pauta();
         pauta.setId(pautaDTO.getId());
-        if (pautaDTO.getSessaoVotacaoDTO() != null) {
-            pauta.setSessaoVotacao(sessaoVotacaoMapper.convertToSessaoVotacao(pautaDTO.getSessaoVotacaoDTO()));
+        pauta.setNome(pautaDTO.getNome());
+        if (pautaDTO.getVotos() != null && pautaDTO.getVotos().size() > 0) {
+            List<Voto> votos = pautaDTO.getVotos().stream()
+                    .map(votoMapper::convertToVoto)
+                    .collect(Collectors.toList());
+            pauta.setVotos(votos);
         }
-        List<Voto> votos = pautaDTO.getVotos().stream()
-                .map(votoMapper::convertToVoto)
-                .collect(Collectors.toList());
-        pauta.setVotos(votos);
         return pauta;
     }
 }

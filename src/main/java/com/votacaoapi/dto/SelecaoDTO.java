@@ -9,10 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RespostaVotacaoDTO {
-    private String tipo;
-    private String titulo;
-    private ItensDTO itens;
-    private BotaoOKDTO botaoOk;
-    private BotaoCancelarDTO botaoCancelar;
+public class SelecaoDTO {
+
+    private String campo1;
+    private Long campo2;
+    private String campo3;
+
 }

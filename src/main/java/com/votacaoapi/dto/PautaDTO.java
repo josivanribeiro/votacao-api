@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PautaDTO {
     private String id;
-    private SessaoVotacaoDTO sessaoVotacaoDTO;
+    private String nome;
     private List<VotoDTO> votos;
 
 }

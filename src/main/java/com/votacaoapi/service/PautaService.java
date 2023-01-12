@@ -2,7 +2,9 @@ package com.votacaoapi.service;
 
 import com.votacaoapi.dto.*;
 import com.votacaoapi.entity.Pauta;
+import com.votacaoapi.exception.EntityNotFoundException;
 import com.votacaoapi.mapper.PautaMapper;
+import com.votacaoapi.mapper.VotoMapper;
 import com.votacaoapi.repository.PautaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,40 +20,47 @@ public class PautaService {
 
     private final PautaRepository pautaRepository;
     private final PautaMapper pautaMapper;
+    private final VotoMapper votoMapper;
 
-    public PautaService(PautaRepository pautaRepository, PautaMapper pautaMapper) {
+    public PautaService(PautaRepository pautaRepository, PautaMapper pautaMapper, VotoMapper votoMapper) {
         this.pautaRepository = pautaRepository;
         this.pautaMapper = pautaMapper;
+        this.votoMapper = votoMapper;
     }
 
-    public RespostaVotacaoDTO save(VotacaoDTO votacaoDTO) {
-        VotoDTO votoDTO = new VotoDTO();
-        votoDTO.setDescricao(votacaoDTO.getCampo1());
-        AssociadoDTO associadoDTO = new AssociadoDTO();
-        associadoDTO.setCpf(votacaoDTO.getCampo2().toString());
-        votoDTO.setAssociadoDTO(associadoDTO);
-
+    public PautaDTO save(VotacaoDTO votacaoDTO) {
         PautaDTO pautaDTO = new PautaDTO();
-        List<VotoDTO> votos = new ArrayList<>();
-        votos.add(votoDTO);
-        pautaDTO.setVotos(votos);
-
+        pautaDTO.setNome(votacaoDTO.getCampo1());
+        pautaDTO.setId(votacaoDTO.getCampo2().toString());
         Pauta pauta = pautaMapper.convertToPauta(pautaDTO);
         PautaDTO pautaDTOResponse = pautaMapper.convertToPautaDTO(pautaRepository.save(pauta));
         logger.info("Pauta salva com sucesso.");
+        return pautaDTOResponse;
+    }
 
-        RespostaVotacaoDTO respostaVotacaoDTO = new RespostaVotacaoDTO();
-        BotaoOKDTO botaoOKDTO = new BotaoOKDTO();
-        BodyDTO bodyDTO = new BodyDTO();
-        if (pautaDTOResponse.getVotos() != null
-                && pautaDTOResponse.getVotos().size() > 0) {
-            bodyDTO.setCampo1(pautaDTOResponse.getVotos().get(0).getDescricao());
-            bodyDTO.setCampo2(new Long(pautaDTOResponse.getVotos().get(0).getAssociadoDTO().getCpf()));
+    public PautaDTO saveSelection(SelecaoDTO selecaoDTO) throws EntityNotFoundException {
+        PautaDTO pautaDTO = pautaRepository.findById(selecaoDTO.getCampo1()).map(pautaMapper::convertToPautaDTO)
+                .orElseThrow(() -> new EntityNotFoundException("Pauta não encontrada."));
+        if (pautaDTO != null) {
+            VotoDTO votoDTO = new VotoDTO();
+            AssociadoDTO associadoDTO = new AssociadoDTO();
+            associadoDTO.setCpf(selecaoDTO.getCampo2().toString());
+            votoDTO.setAssociado(associadoDTO);
+            votoDTO.setDescricao(selecaoDTO.getCampo3());
+            if (pautaDTO.getVotos() == null) {
+                List<VotoDTO> votoDTOs = new ArrayList<>();
+                votoDTOs.add(votoDTO);
+                pautaDTO.setVotos(votoDTOs);
+            } else {
+                pautaDTO.getVotos().add(votoDTO);
+            }
+
+            PautaDTO pautaDTOResponse = pautaMapper
+                    .convertToPautaDTO(pautaRepository.save(pautaMapper.convertToPauta(pautaDTO)));
+            logger.info("Pauta salva com sucesso.");
+            return pautaDTOResponse;
         }
-        botaoOKDTO.setBody(bodyDTO);
-        respostaVotacaoDTO.setBotaoOk(botaoOKDTO);
-
-        return respostaVotacaoDTO;
+        return null;
     }
 
 }
