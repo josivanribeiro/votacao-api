@@ -4,7 +4,6 @@ import com.votacaoapi.dto.*;
 import com.votacaoapi.entity.Pauta;
 import com.votacaoapi.exception.EntityNotFoundException;
 import com.votacaoapi.mapper.PautaMapper;
-import com.votacaoapi.mapper.VotoMapper;
 import com.votacaoapi.repository.PautaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,12 +19,10 @@ public class PautaService {
 
     private final PautaRepository pautaRepository;
     private final PautaMapper pautaMapper;
-    private final VotoMapper votoMapper;
 
-    public PautaService(PautaRepository pautaRepository, PautaMapper pautaMapper, VotoMapper votoMapper) {
+    public PautaService(PautaRepository pautaRepository, PautaMapper pautaMapper) {
         this.pautaRepository = pautaRepository;
         this.pautaMapper = pautaMapper;
-        this.votoMapper = votoMapper;
     }
 
     public PautaDTO save(VotacaoDTO votacaoDTO) {
